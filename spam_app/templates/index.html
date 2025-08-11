@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spam Email Detection</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/Style.css' %}" />
+  </head>
+  <body class="bg-dark text-white">
+    <div
+      class="container min-vh-100 d-flex flex-column justify-content-center align-items-center text-center"
+    >
+      <h1 class="fw-bold text-warning mb-3">📧 Spam Email Detection</h1>
+      <p class="text-light mb-4">
+        Enter your text below and select the algorithm to check if it's spam.
+      </p>
+
+      <div
+        class="card shadow-lg p-4 bg-secondary border-0 rounded-4"
+        style="max-width: 600px; width: 100%"
+      >
+        <!-- Django form -->
+        <form method="POST" class="w-100">
+          {% csrf_token %}
+
+          <!-- Email/Text input -->
+          <textarea
+            name="email_text"
+            class="form-control mb-3 p-3"
+            rows="5"
+            placeholder="Type or paste your message here..."
+            required
+          >
+{{ email_text }}</textarea
+          >
+
+          <!-- Algorithm selection -->
+          <div class="d-flex justify-content-around mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="algorithm"
+              id="algo1" value="naive_bayes" {% if algorithm == 'naive_bayes' or
+              not algorithm %}checked{% endif %} />
+              <label class="form-check-label" for="algo1">Naive Bayes</label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="algorithm"
+              id="algo2" value="svm" {% if algorithm == 'svm' %}checked{% endif
+              %} />
+              <label class="form-check-label" for="algo2">SVM</label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="algorithm"
+              id="algo3" value="other" {% if algorithm == 'other' %}checked{%
+              endif %} />
+              <label class="form-check-label" for="algo3">Other</label>
+            </div>
+          </div>
+
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-warning w-100 py-2 fw-bold">
+            Check
+          </button>
+        </form>
+      </div>
+
+      <!-- Result Display -->
+      {% if prediction %}
+      <div id="result">Result: {{ prediction }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
